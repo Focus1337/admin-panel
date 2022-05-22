@@ -18,11 +18,11 @@ export class BooksService {
 
 
     public getAll(): Promise<Book[]> {
-        return this.repository.find();
+        return this.repository.find({relations: ['author']});
     }
 
     public getBook(id: string): Promise<Book> {
-        return this.repository.findOne(id);
+        return this.repository.findOneOrFail(id, {relations: ['author']});
     }
 
     public async deleteBook(id: string): Promise<Book> {
@@ -33,7 +33,7 @@ export class BooksService {
 
     public async updateBook(body: UpdateBookDto, id: string): Promise<Book> {
         const author: Author = await this.authorsService.getAuthor(body.authorId);
-        const book: Book = await this.repository.findOne(id);
+        const book: Book = await this.repository.findOne(id, {relations: ['author']});
 
         book.title = body.title;
         book.description = body.description;

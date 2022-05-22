@@ -1,11 +1,11 @@
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './users.entity';
-import {randomUUID} from "crypto";
-import {RolesService} from "../roles/roles.service";
-import {Role} from "../roles/roles.entity";
+import { randomUUID } from 'crypto';
+import { RolesService } from '../roles/roles.service';
+import { Role } from '../roles/roles.entity';
 
 @Injectable()
 export class UsersService {
@@ -16,21 +16,47 @@ export class UsersService {
   private readonly rolesService: RolesService;
 
   public getAll(): Promise<User[]> {
-    return this.repository.find();
+    return this.repository.find({relations: ['roles']});
   }
 
   public getUser(id: string): Promise<User> {
-    return this.repository.findOne(id);
+    return this.repository.findOneOrFail(id, {relations: ['roles']});
   }
 
   public async deleteUser(id: string): Promise<User> {
-    const user: User = await this.repository.findOne(id);
+    const user: User = await this.repository.findOneOrFail(id);
 
     return this.repository.remove(user);
   }
 
+  public async addUserRole(id: string, roleName: string): Promise<User> {
+    const user: User = await this.repository.findOneOrFail(id, {relations: ['roles']});
+
+    if (user != null) {
+      const role: Role = await this.rolesService.getRoleByName(roleName);
+
+      if (!user.roles.includes(role))
+      user.roles.push(role);
+
+      return this.repository.save(user);
+    }
+  }
+
+  public async deleteUserRole(id: string, roleName: string): Promise<User> {
+    const user: User = await this.getUser(id);
+
+    if (user != null) {
+      const role: Role = await this.rolesService.getRoleByName(roleName);
+
+      if (user.roles.includes(role))
+        user.roles = user.roles.filter((f) => f.id != roleName);
+
+      return this.repository.save(user);
+    }
+  }
+
   public async createUser(body: CreateUserDto): Promise<User> {
-    const role: Role = await this.rolesService.getRoleByName('User')
+    const role: Role = await this.rolesService.getRoleByName('User');
     const user: User = new User();
 
     user.id = randomUUID();
@@ -40,7 +66,7 @@ export class UsersService {
     user.passwordHash = body.password;
     user.subId = 4; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
-    user.image = '';//new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
+    user.image = ''; //new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [role];
 
     user.userName = body.email;

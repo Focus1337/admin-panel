@@ -13,10 +13,10 @@ export class RolesService {
   }
 
   public getRoleById(id: string): Promise<Role> {
-    return this.repository.findOne(id);
+    return this.repository.findOneOrFail(id);
   }
 
   public getRoleByName(name: string): Promise<Role> {
-    return this.repository.findOne({ name: name });
+    return this.repository.findOneOrFail({ name: name });
   }
 }

@@ -5,6 +5,7 @@ import {
   Get,
   Inject,
   Param,
+  Query,
   ParseUUIDPipe,
   Post,
   Put,
@@ -41,6 +42,22 @@ export class UsersController {
   // ): Promise<User> {
   //   return this.service.updateUser(body, id);
   // }
+
+  @Post('addUserRole/:id')
+  public addUserRole(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body('userRole') body: string,
+  ): Promise<User> {
+    return this.service.addUserRole(id, body);
+  }
+
+  @Post('deleteUserRole/:id')
+  public deleteUserRole(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body('userRole') body: string,
+  ): Promise<User> {
+    return this.service.deleteUserRole(id, body);
+  }
 
   @Post()
   public createUser(@Body() body: CreateUserDto): Promise<User> {
