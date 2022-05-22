@@ -43,13 +43,10 @@ export class UsersService {
   }
 
   public async deleteUserRole(id: string, roleName: string): Promise<User> {
-    const user: User = await this.getUser(id);
+    const user: User = await this.repository.findOneOrFail(id, {relations: ['roles']});
 
     if (user != null) {
-      const role: Role = await this.rolesService.getRoleByName(roleName);
-
-      if (user.roles.includes(role))
-        user.roles = user.roles.filter((f) => f.id != roleName);
+        user.roles = user.roles.filter((r) => r.name != roleName);
 
       return this.repository.save(user);
     }
