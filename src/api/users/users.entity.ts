@@ -1,9 +1,10 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column,
+  Column, JoinTable, ManyToMany,
 
 } from 'typeorm';
+import {Role} from "../roles/roles.entity";
 
 export abstract class IdentityUser {
 
@@ -67,4 +68,18 @@ export class User extends IdentityUser {
 
   @Column({ type: 'text', name: 'Image', nullable: false })
   public image: string;
+
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: "AspNetUserRoles",
+    joinColumn: {
+      name: "UserId",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "RoleId",
+      referencedColumnName: "id"
+    }
+  })
+  roles: Role[];
 }

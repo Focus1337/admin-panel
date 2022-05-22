@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { AuthorsModule } from './api/authors/authors.module';
 import { BooksModule } from './api/books/books.module';
+import { RolesModule } from './api/roles/roles.module';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -16,6 +17,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     AuthorsModule,
     UsersModule,
     BooksModule,
+    RolesModule,
     ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
   ],
