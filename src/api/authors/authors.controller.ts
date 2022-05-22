@@ -5,11 +5,9 @@ import {
   Get,
   Inject,
   Param,
-  ParseIntPipe,
   ParseUUIDPipe,
   Post,
   Put,
-  Redirect,
 } from '@nestjs/common';
 import { Author } from './authors.entity';
 import { AuthorsService } from './authors.service';

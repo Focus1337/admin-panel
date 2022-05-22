@@ -2,34 +2,69 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+
 } from 'typeorm';
 
-@Entity({ name: 'AspNetUsers' })
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  public id!: string;
+export abstract class IdentityUser {
 
-  @Column({ type: 'varchar', length: 256, name: 'Email' })
+  @PrimaryGeneratedColumn('uuid', { name: 'Id' })
+  public id: string;
+
+  @Column({ type: 'character varying', length: 256, name: 'Email', nullable: false })
   public email: string;
 
-  @Column({ type: 'text', name: 'Name' })
+  @Column({ type: 'character varying', length: 256, name: 'NormalizedEmail', nullable: true })
+  public normalizedEmail: string;
+
+  @Column({ type: 'boolean', name: 'EmailConfirmed', default: false, nullable: false })
+  public emailConfirmed: boolean;
+
+  @Column({ type: 'text', name: 'PasswordHash', nullable: false })
+  public passwordHash: string;
+
+  @Column({ type: 'character varying', length: 256, name: 'UserName', nullable: true })
+  public userName: string;
+
+  @Column({ type: 'character varying', length: 256, name: 'NormalizedUserName', nullable: true })
+  public normalizedUserName: string;
+
+  @Column({ type: 'text', name: 'SecurityStamp', nullable: true })
+  public securityStamp: string;
+
+  @Column({ type: 'text', name: 'ConcurrencyStamp', nullable: true })
+  public concurrencyStamp: string;
+
+  @Column({ type: 'text', name: 'PhoneNumber', nullable: true })
+  public phoneNumber: string;
+
+  @Column({ type: 'boolean', name: 'PhoneNumberConfirmed', default: false, nullable: false })
+  public phoneNumberConfirmed: boolean;
+
+  @Column({ type: 'boolean', name: 'TwoFactorEnabled', default: false, nullable: true })
+  public twoFactorEnabled: boolean;
+
+  @Column({ type: 'boolean', name: 'LockoutEnabled', default: true, nullable: false })
+  public lockoutEnabled: boolean;
+
+  @Column({ type: 'integer', name: 'AccessFailedCount', default: 0, nullable: false })
+  public accessFailedCount: number;
+}
+
+@Entity({ name: 'AspNetUsers' })
+export class User extends IdentityUser {
+
+  @Column({ type: 'text', name: 'Name', nullable: false })
   public name: string;
 
-  @Column({ type: 'text', name: 'LastName' })
+  @Column({ type: 'text', name: 'LastName', nullable: false })
   public lastName: string;
 
-  // @Column({ type: 'boolean', default: false })
-  // public isDeleted: boolean;
+  @Column({ type: 'integer', name: 'SubId', nullable: false })
+  public subId: number;
 
-  /*
-   * Create and Update Date Columns
-   */
+  @Column({ type: 'timestamp without time zone', name: 'SubDateStart', nullable: false })
+  public subDateStart: Date;
 
-  // @CreateDateColumn({ type: 'timestamp' })
-  // public createdAt!: Date;
-  //
-  // @UpdateDateColumn({ type: 'timestamp' })
-  // public updatedAt!: Date;
+  @Column({ type: 'text', name: 'Image', nullable: false })
+  public image: string;
 }

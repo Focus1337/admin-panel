@@ -1,12 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  Generated,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Book } from '../books/books.entity';
 
 // export const PK_Authors = 'PK_Authors';
 
@@ -23,4 +16,7 @@ export class Author {
 
   @Column({ type: 'text', name: 'Description', nullable: false })
   public description: string;
+
+  @OneToMany(() => Book, (book: Book) => book.author)
+  public books: Book[];
 }

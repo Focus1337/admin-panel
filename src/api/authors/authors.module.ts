@@ -8,5 +8,6 @@ import { AuthorsService } from './authors.service';
   imports: [TypeOrmModule.forFeature([Author])],
   providers: [AuthorsService],
   controllers: [AuthorsController],
+  exports: [AuthorsService]
 })
 export class AuthorsModule {}
