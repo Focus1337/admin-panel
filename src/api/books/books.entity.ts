@@ -1,4 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Author } from '../authors/authors.entity';
 
 @Entity({ name: 'Books' })
@@ -35,6 +41,6 @@ export class Book {
   public addedDate: Date;
 
   @ManyToOne(() => Author, (author: Author) => author.books)
-  @JoinColumn({name: "AuthorId"})
+  @JoinColumn({ name: 'AuthorId' })
   public author: Author;
 }

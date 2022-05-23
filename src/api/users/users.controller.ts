@@ -9,11 +9,17 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Req,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateNameDto, UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
+import { JwtAuthGuard } from '@/api/users/auth/auth.guard';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -33,6 +39,16 @@ export class UsersController {
   @Delete(':id')
   public deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.service.deleteUser(id);
+  }
+
+  @Put('name')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  private updateName(
+    @Body() body: UpdateNameDto,
+    @Req() req: Request,
+  ): Promise<User> {
+    return this.service.updateName(body, req);
   }
 
   // @Put(':id')

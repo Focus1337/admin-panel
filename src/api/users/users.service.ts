@@ -6,6 +6,8 @@ import { User } from './users.entity';
 import { randomUUID } from 'crypto';
 import { RolesService } from '../roles/roles.service';
 import { Role } from '../roles/roles.entity';
+import { UpdateNameDto } from '@/api/users/dto/update-user.dto';
+import { Request } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -16,11 +18,11 @@ export class UsersService {
   private readonly rolesService: RolesService;
 
   public getAll(): Promise<User[]> {
-    return this.repository.find({relations: ['roles']});
+    return this.repository.find({ relations: ['roles'] });
   }
 
   public getUser(id: string): Promise<User> {
-    return this.repository.findOneOrFail(id, {relations: ['roles']});
+    return this.repository.findOneOrFail(id, { relations: ['roles'] });
   }
 
   public async deleteUser(id: string): Promise<User> {
@@ -29,24 +31,35 @@ export class UsersService {
     return this.repository.remove(user);
   }
 
+  public async updateName(body: UpdateNameDto, req: Request): Promise<User> {
+    const user: User = <User>req.user;
+
+    user.name = body.name;
+
+    return this.repository.save(user);
+  }
+
   public async addUserRole(id: string, roleName: string): Promise<User> {
-    const user: User = await this.repository.findOneOrFail(id, {relations: ['roles']});
+    const user: User = await this.repository.findOneOrFail(id, {
+      relations: ['roles'],
+    });
 
     if (user != null) {
       const role: Role = await this.rolesService.getRoleByName(roleName);
 
-      if (!user.roles.includes(role))
-      user.roles.push(role);
+      if (!user.roles.includes(role)) user.roles.push(role);
 
       return this.repository.save(user);
     }
   }
 
   public async deleteUserRole(id: string, roleName: string): Promise<User> {
-    const user: User = await this.repository.findOneOrFail(id, {relations: ['roles']});
+    const user: User = await this.repository.findOneOrFail(id, {
+      relations: ['roles'],
+    });
 
     if (user != null) {
-        user.roles = user.roles.filter((r) => r.name != roleName);
+      user.roles = user.roles.filter((r) => r.name != roleName);
 
       return this.repository.save(user);
     }
