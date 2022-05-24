@@ -8,6 +8,8 @@ import { RolesService } from '../roles/roles.service';
 import { Role } from '../roles/roles.entity';
 import { UpdateNameDto } from '@/api/users/dto/update-user.dto';
 import { Request } from 'express';
+import { Subscription } from '@/api/subs/subs.entity';
+import { SubsService } from '@/api/subs/subs.service';
 
 @Injectable()
 export class UsersService {
@@ -17,8 +19,11 @@ export class UsersService {
   @Inject(RolesService)
   private readonly rolesService: RolesService;
 
-  public getAll(): Promise<User[]> {
-    return this.repository.find({ relations: ['roles'] });
+  @Inject(SubsService)
+  private readonly subsService: SubsService;
+
+  public async getAll(): Promise<User[]> {
+    return this.repository.find({ relations: ['roles', 'sub'] });
   }
 
   public getUser(id: string): Promise<User> {
@@ -67,6 +72,7 @@ export class UsersService {
 
   public async createUser(body: CreateUserDto): Promise<User> {
     const role: Role = await this.rolesService.getRoleByName('User');
+    const sub: Subscription = await this.subsService.getSubById(4);
     const user: User = new User();
 
     user.id = randomUUID();
@@ -74,7 +80,7 @@ export class UsersService {
     user.lastName = body.lastName;
     user.email = body.email;
     user.passwordHash = body.password;
-    user.subId = 4; // free sub
+    user.sub = sub; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
     user.image = ''; //new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [role];

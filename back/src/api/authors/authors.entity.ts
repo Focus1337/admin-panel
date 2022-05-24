@@ -1,8 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Book } from '../books/books.entity';
 
-// export const PK_Authors = 'PK_Authors';
-
 @Entity({ name: 'Authors' })
 export class Author {
   @PrimaryGeneratedColumn('uuid', { name: 'Id' })

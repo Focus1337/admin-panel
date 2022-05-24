@@ -7,6 +7,8 @@ import { User } from '@/api/users/users.entity';
 import { randomUUID } from 'crypto';
 import { Role } from '@/api/roles/roles.entity';
 import { RolesService } from '@/api/roles/roles.service';
+import { Subscription } from '@/api/subs/subs.entity';
+import { SubsService } from '@/api/subs/subs.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +18,9 @@ export class AuthService {
   @Inject(RolesService)
   private readonly rolesService: RolesService;
 
+  @Inject(SubsService)
+  private readonly subsService: SubsService;
+
   @Inject(AuthHelper)
   private readonly helper: AuthHelper;
 
@@ -24,6 +29,7 @@ export class AuthService {
     let user: User = await this.repository.findOne({ where: { email } });
     const roleUser: Role = await this.rolesService.getRoleByName('User');
     const roleAdmin: Role = await this.rolesService.getRoleByName('Admin');
+    const sub: Subscription = await this.subsService.getSubById(4);
 
     if (user) {
       throw new HttpException('Conflict', HttpStatus.CONFLICT);
@@ -36,7 +42,7 @@ export class AuthService {
     user.lastName = lastName;
     user.email = email;
     user.passwordHash = this.helper.encodePassword(password);
-    user.subId = 4; // free sub
+    user.sub = sub; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
     user.image = ''; //new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [roleUser, roleAdmin];

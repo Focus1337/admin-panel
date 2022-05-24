@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, Header,
   Inject,
   Param,
   ParseUUIDPipe,
@@ -20,21 +20,23 @@ export class AuthorsController {
   private readonly service: AuthorsService;
 
   @Get()
+  @Header('X-Total-Count', '5')
+  @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   public getAll(): Promise<Author[]> {
     return this.service.getAll();
   }
 
-  @Get(':id')
+  @Get('getAuthor/:id')
   public getAuthor(@Param('id', ParseUUIDPipe) id: string): Promise<Author> {
     return this.service.getAuthor(id);
   }
 
-  @Delete(':id')
+  @Delete('deleteAuthor/:id')
   public deleteAuthor(@Param('id', ParseUUIDPipe) id: string): Promise<Author> {
     return this.service.deleteAuthor(id);
   }
 
-  @Put(':id')
+  @Put('updateAuthor/:id')
   public updateAuthor(
     @Body() body: UpdateAuthorDto,
     @Param('id') id: string,
@@ -42,7 +44,7 @@ export class AuthorsController {
     return this.service.updateAuthor(body, id);
   }
 
-  @Post()
+  @Post('createAuthor')
   public createAuthor(@Body() body: CreateAuthorDto): Promise<Author> {
     return this.service.createAuthor(body);
   }

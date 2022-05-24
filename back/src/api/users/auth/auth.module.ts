@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from '@/api/users/users.entity';
 import { RolesModule } from '@/api/roles/roles.module';
 import { PassportModule } from '@nestjs/passport';
+import { SubsModule } from '@/api/subs/subs.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PassportModule } from '@nestjs/passport';
     }),
     TypeOrmModule.forFeature([User]),
     RolesModule,
+    SubsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthHelper, JwtStrategy],

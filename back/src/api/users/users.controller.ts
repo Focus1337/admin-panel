@@ -5,7 +5,6 @@ import {
   Get,
   Inject,
   Param,
-  Query,
   ParseUUIDPipe,
   Post,
   Put,
@@ -13,6 +12,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Req,
+  Header,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateNameDto, UpdateUserDto } from './dto/update-user.dto';
@@ -27,21 +27,23 @@ export class UsersController {
   private readonly service: UsersService;
 
   @Get()
+  @Header('X-Total-Count', '5')
+  @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   public getAll(): Promise<User[]> {
     return this.service.getAll();
   }
 
-  @Get(':id')
+  @Get('getUser/:id')
   public getUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.service.getUser(id);
   }
 
-  @Delete(':id')
+  @Delete('deleteUser/:id')
   public deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.service.deleteUser(id);
   }
 
-  @Put('name')
+  @Put('changeName')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   private updateName(
@@ -75,7 +77,7 @@ export class UsersController {
     return this.service.deleteUserRole(id, body);
   }
 
-  @Post()
+  @Post('createUser')
   public createUser(@Body() body: CreateUserDto): Promise<User> {
     return this.service.createUser(body);
   }

@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, Header,
   Inject,
   Param,
   ParseUUIDPipe,
@@ -20,21 +20,23 @@ export class BooksController {
   private readonly service: BooksService;
 
   @Get()
+  @Header('X-Total-Count', '5')
+  @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   public getAll(): Promise<Book[]> {
     return this.service.getAll();
   }
 
-  @Get(':id')
+  @Get('getBook/:id')
   public getBook(@Param('id', ParseUUIDPipe) id: string): Promise<Book> {
     return this.service.getBook(id);
   }
 
-  @Delete(':id')
+  @Delete('deleteBook/:id')
   public deleteBook(@Param('id', ParseUUIDPipe) id: string): Promise<Book> {
     return this.service.deleteBook(id);
   }
 
-  @Put(':id')
+  @Put('updateBook/:id')
   public updateBook(
     @Body() body: UpdateBookDto,
     @Param('id') id: string,
@@ -42,7 +44,7 @@ export class BooksController {
     return this.service.updateBook(body, id);
   }
 
-  @Post()
+  @Post('createBook')
   public createBook(@Body() body: CreateBookDto): Promise<Book> {
     return this.service.createBook(body);
   }
