@@ -4,7 +4,7 @@ export const AuthorList = () => (
     <List>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="fullname" />
+            <TextField source="fullName" />
             <ImageField source="image" />
             <TextField source="description" />
             <EditButton/>
@@ -15,10 +15,10 @@ export const AuthorList = () => (
 export const AuthorEdit = () => (
     <Edit>
         <SimpleForm>
-            <TextInput source="id"/>
-            <TextInput source="fullname"/>
-            <ImageInput source="image"/>
-            <TextInput source="description"/>
+            <TextInput disabled source="id" />
+            <TextInput source="fullName" />
+            <TextInput source="image" />
+            <TextInput multiline source="description" />
         </SimpleForm>
     </Edit>
 );
@@ -26,9 +26,9 @@ export const AuthorEdit = () => (
 export const AuthorCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source='fullname'/>
-            <ImageInput source='image'/>
-            <TextInput source='description'/>
+            <TextInput source='fullName'/>
+            <TextInput source='image'/>
+            <TextInput multiline source='description'/>
         </SimpleForm>
     </Create>
 );
