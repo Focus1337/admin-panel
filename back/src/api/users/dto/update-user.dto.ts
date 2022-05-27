@@ -24,9 +24,3 @@ export class UpdateUserDto {
 
   // public roles: Role[];
 }
-
-export class UpdateNameDto {
-  @IsString()
-  @IsOptional()
-  public readonly name?: string;
-}

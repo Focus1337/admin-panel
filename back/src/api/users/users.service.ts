@@ -6,13 +6,10 @@ import { User } from './users.entity';
 import { randomUUID } from 'crypto';
 import { RolesService } from '../roles/roles.service';
 import { Role } from '../roles/roles.entity';
-import { UpdateNameDto, UpdateUserDto } from '@/api/users/dto/update-user.dto';
-import { Request } from 'express';
+import { UpdateUserDto } from '@/api/users/dto/update-user.dto';
 import { Subscription } from '@/api/subs/subs.entity';
 import { SubsService } from '@/api/subs/subs.service';
 import { AuthHelper } from '@/api/users/auth/auth.helper';
-import { Author } from '@/api/authors/authors.entity';
-import { Book } from '@/api/books/books.entity';
 
 @Injectable()
 export class UsersService {
@@ -40,14 +37,6 @@ export class UsersService {
     const user: User = await this.repository.findOneOrFail(id);
 
     return this.repository.remove(user);
-  }
-
-  public async updateName(body: UpdateNameDto, req: Request): Promise<User> {
-    const user: User = <User>req.user;
-
-    user.name = body.name;
-
-    return this.repository.save(user);
   }
 
   // public async addUserRole(id: string, roleName: string): Promise<User> {

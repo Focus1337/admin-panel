@@ -44,7 +44,7 @@ export class AuthService {
     user.passwordHash = this.helper.encodePassword(password);
     user.sub = sub; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
-    user.image = ''; //new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
+    user.image = ''; // 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [roleUser, roleAdmin];
 
     user.userName = email;
@@ -61,30 +61,32 @@ export class AuthService {
   }
 
   public async login(body: LoginDto): Promise<string | never> {
-    const { email, password }: LoginDto = body;
-    const user: User = await this.repository.findOne({ where: { email } });
+    const user: User = await this.repository.findOne({
+      where: { email: body.username },
+      relations: ['roles'],
+    });
 
     if (!user) {
       throw new HttpException('No user found', HttpStatus.NOT_FOUND);
     }
 
     const isPasswordValid: boolean = this.helper.isPasswordValid(
-      password,
+      body.password,
       user.passwordHash,
     );
+
+    if (!user.roles.some((e) => e.name === 'Admin')) {
+      throw new HttpException('User is not admin', HttpStatus.FORBIDDEN);
+    }
 
     if (!isPasswordValid) {
       throw new HttpException('No user found', HttpStatus.NOT_FOUND);
     }
 
-    // await this.repository.update(user.id, { lastLoginAt: new Date() });
-
-    return this.helper.generateToken(user);
+    return JSON.stringify(this.helper.generateToken(user));
   }
 
   public async refresh(user: User): Promise<string> {
-    // await this.repository.update(user.id, { lastLoginAt: new Date() });
-
     return this.helper.generateToken(user);
   }
 }
