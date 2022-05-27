@@ -27,5 +27,6 @@ import { SubsModule } from '@/api/subs/subs.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthHelper, JwtStrategy],
+  exports: [AuthHelper],
 })
 export class AuthModule {}

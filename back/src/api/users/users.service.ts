@@ -6,10 +6,13 @@ import { User } from './users.entity';
 import { randomUUID } from 'crypto';
 import { RolesService } from '../roles/roles.service';
 import { Role } from '../roles/roles.entity';
-import { UpdateNameDto } from '@/api/users/dto/update-user.dto';
+import { UpdateNameDto, UpdateUserDto } from '@/api/users/dto/update-user.dto';
 import { Request } from 'express';
 import { Subscription } from '@/api/subs/subs.entity';
 import { SubsService } from '@/api/subs/subs.service';
+import { AuthHelper } from '@/api/users/auth/auth.helper';
+import { Author } from '@/api/authors/authors.entity';
+import { Book } from '@/api/books/books.entity';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +24,9 @@ export class UsersService {
 
   @Inject(SubsService)
   private readonly subsService: SubsService;
+
+  @Inject(AuthHelper)
+  private readonly authHelper: AuthHelper;
 
   public async getAll(): Promise<User[]> {
     return this.repository.find({ relations: ['roles', 'sub'] });
@@ -44,30 +50,68 @@ export class UsersService {
     return this.repository.save(user);
   }
 
-  public async addUserRole(id: string, roleName: string): Promise<User> {
+  // public async addUserRole(id: string, roleName: string): Promise<User> {
+  //   const user: User = await this.repository.findOneOrFail(id, {
+  //     relations: ['roles'],
+  //   });
+  //
+  //   if (user != null) {
+  //     const role: Role = await this.rolesService.getRoleByName(roleName);
+  //
+  //     if (!user.roles.includes(role)) user.roles.push(role);
+  //
+  //     return this.repository.save(user);
+  //   }
+  // }
+  //
+  // public async deleteUserRole(id: string, roleName: string): Promise<User> {
+  //   const user: User = await this.repository.findOneOrFail(id, {
+  //     relations: ['roles'],
+  //   });
+  //
+  //   if (user != null) {
+  //     user.roles = user.roles.filter((r) => r.name != roleName);
+  //
+  //     return this.repository.save(user);
+  //   }
+  // }
+
+  public async updateUser(body: UpdateUserDto, id: string): Promise<User> {
     const user: User = await this.repository.findOneOrFail(id, {
-      relations: ['roles'],
+      relations: ['roles', 'sub'],
     });
 
-    if (user != null) {
-      const role: Role = await this.rolesService.getRoleByName(roleName);
-
-      if (!user.roles.includes(role)) user.roles.push(role);
-
-      return this.repository.save(user);
+    user.name = body.name;
+    user.lastName = body.lastName;
+    user.email = body.email;
+    user.userName = body.email;
+    user.normalizedEmail = body.email.toUpperCase();
+    user.normalizedUserName = body.email.toUpperCase();
+    if (
+      body.password != null &&
+      body.password != '' &&
+      body.confirmPassword != null &&
+      body.confirmPassword != '' &&
+      body.password == body.confirmPassword
+    ) {
+      user.passwordHash = this.authHelper.encodePassword(body.password);
     }
-  }
 
-  public async deleteUserRole(id: string, roleName: string): Promise<User> {
-    const user: User = await this.repository.findOneOrFail(id, {
-      relations: ['roles'],
-    });
+    // const copy = [];
+    //
+    // body.roles.forEach(function (item) {
+    //   copy.push(item);
+    //   console.warn(item);
+    // });
 
-    if (user != null) {
-      user.roles = user.roles.filter((r) => r.name != roleName);
+    // user.roles = [await this.rolesService.getRoleByName(body.roles.f.name)];
+    // for (let i = 0; i < body.roles.length; i++) {
+    //   user.roles.push(
+    //     await this.rolesService.getRoleByName(body.roles[i].name),
+    //   );
+    // }
 
-      return this.repository.save(user);
-    }
+    return this.repository.save(user);
   }
 
   public async createUser(body: CreateUserDto): Promise<User> {
@@ -79,10 +123,15 @@ export class UsersService {
     user.name = body.name;
     user.lastName = body.lastName;
     user.email = body.email;
-    user.passwordHash = body.password;
+
+    if (body.password == body.confirmPassword) {
+      user.passwordHash = this.authHelper.encodePassword(body.password);
+    }
+
     user.sub = sub; // free sub
+    // user.subId = 4; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
-    user.image = ''; //new Buffer('','base64').toString();// 'https://i.imgur.com/DL9EEnF.png';
+    user.image = ''; // 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [role];
 
     user.userName = body.email;

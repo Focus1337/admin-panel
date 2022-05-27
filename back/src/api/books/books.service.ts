@@ -43,7 +43,9 @@ export class BooksService {
     book.image = body.image;
     book.year = body.year;
     book.rating = body.rating;
-    book.author = author;
+    if (body.authorId != null && body.authorId != '') {
+      book.author = author;
+    }
 
     return this.repository.save(book);
   }

@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get, Header,
+  Get,
+  Header,
   Inject,
   Param,
   ParseUUIDPipe,
@@ -26,17 +27,17 @@ export class AuthorsController {
     return this.service.getAll();
   }
 
-  @Get('getAuthor/:id')
+  @Get(':id')
   public getAuthor(@Param('id', ParseUUIDPipe) id: string): Promise<Author> {
     return this.service.getAuthor(id);
   }
 
-  @Delete('deleteAuthor/:id')
+  @Delete(':id')
   public deleteAuthor(@Param('id', ParseUUIDPipe) id: string): Promise<Author> {
     return this.service.deleteAuthor(id);
   }
 
-  @Put('updateAuthor/:id')
+  @Put(':id')
   public updateAuthor(
     @Body() body: UpdateAuthorDto,
     @Param('id') id: string,
@@ -44,7 +45,7 @@ export class AuthorsController {
     return this.service.updateAuthor(body, id);
   }
 
-  @Post('createAuthor')
+  @Post()
   public createAuthor(@Body() body: CreateAuthorDto): Promise<Author> {
     return this.service.createAuthor(body);
   }

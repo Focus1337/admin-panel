@@ -33,12 +33,12 @@ export class UsersController {
     return this.service.getAll();
   }
 
-  @Get('getUser/:id')
+  @Get(':id')
   public getUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.service.getUser(id);
   }
 
-  @Delete('deleteUser/:id')
+  @Delete(':id')
   public deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.service.deleteUser(id);
   }
@@ -53,31 +53,31 @@ export class UsersController {
     return this.service.updateName(body, req);
   }
 
-  // @Put(':id')
-  // public updateUser(
-  //     @Body() body: UpdateUserDto,
-  //     @Param('id') id: string,
+  @Put(':id')
+  public updateUser(
+    @Body() body: UpdateUserDto,
+    @Param('id') id: string,
+  ): Promise<User> {
+    return this.service.updateUser(body, id);
+  }
+
+  // @Post(':id')
+  // public addUserRole(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body('userRole') body: string,
   // ): Promise<User> {
-  //   return this.service.updateUser(body, id);
+  //   return this.service.addUserRole(id, body);
+  // }
+  //
+  // @Post(':id')
+  // public deleteUserRole(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body('userRole') body: string,
+  // ): Promise<User> {
+  //   return this.service.deleteUserRole(id, body);
   // }
 
-  @Post('addUserRole/:id')
-  public addUserRole(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body('userRole') body: string,
-  ): Promise<User> {
-    return this.service.addUserRole(id, body);
-  }
-
-  @Post('deleteUserRole/:id')
-  public deleteUserRole(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body('userRole') body: string,
-  ): Promise<User> {
-    return this.service.deleteUserRole(id, body);
-  }
-
-  @Post('createUser')
+  @Post()
   public createUser(@Body() body: CreateUserDto): Promise<User> {
     return this.service.createUser(body);
   }
