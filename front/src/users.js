@@ -11,7 +11,10 @@ export const UserList = () => (
             <TextField source="lastName" />
             <DateField source="subDateStart" />
             <ArrayField source="roles"><SingleFieldList><ChipField source="name" /></SingleFieldList></ArrayField>
-            <NumberField source="sub.name" />
         </Datagrid>
     </List>
 );
+
+// export const CreateRole = () => (
+
+// );
