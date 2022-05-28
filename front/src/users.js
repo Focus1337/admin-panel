@@ -38,9 +38,9 @@ export const UserEdit = () => (
             <TextInput source="email"/>
             <PasswordInput source="password"/>
             <PasswordInput source="confirmPassword"/>
-            {/*<ArrayInput source="roles"><SimpleFormIterator>*/}
-            {/*    <TextInput source="name"/>*/}
-            {/*    </SimpleFormIterator></ArrayInput>*/}
+            <ArrayInput source="roles"><SimpleFormIterator>
+                <TextInput source="name"/>
+                </SimpleFormIterator></ArrayInput>
         </SimpleForm>
     </Edit>
 );
