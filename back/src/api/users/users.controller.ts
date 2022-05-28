@@ -57,22 +57,6 @@ export class UsersController {
     return this.service.updateUser(body, id);
   }
 
-  // @Post(':id')
-  // public addUserRole(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body('userRole') body: string,
-  // ): Promise<User> {
-  //   return this.service.addUserRole(id, body);
-  // }
-  //
-  // @Post(':id')
-  // public deleteUserRole(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body('userRole') body: string,
-  // ): Promise<User> {
-  //   return this.service.deleteUserRole(id, body);
-  // }
-
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)

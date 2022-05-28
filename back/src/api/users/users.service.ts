@@ -39,32 +39,6 @@ export class UsersService {
     return this.repository.remove(user);
   }
 
-  // public async addUserRole(id: string, roleName: string): Promise<User> {
-  //   const user: User = await this.repository.findOneOrFail(id, {
-  //     relations: ['roles'],
-  //   });
-  //
-  //   if (user != null) {
-  //     const role: Role = await this.rolesService.getRoleByName(roleName);
-  //
-  //     if (!user.roles.includes(role)) user.roles.push(role);
-  //
-  //     return this.repository.save(user);
-  //   }
-  // }
-  //
-  // public async deleteUserRole(id: string, roleName: string): Promise<User> {
-  //   const user: User = await this.repository.findOneOrFail(id, {
-  //     relations: ['roles'],
-  //   });
-  //
-  //   if (user != null) {
-  //     user.roles = user.roles.filter((r) => r.name != roleName);
-  //
-  //     return this.repository.save(user);
-  //   }
-  // }
-
   public async updateUser(body: UpdateUserDto, id: string): Promise<User> {
     const user: User = await this.repository.findOneOrFail(id, {
       relations: ['roles', 'sub'],
@@ -86,19 +60,11 @@ export class UsersService {
       user.passwordHash = this.authHelper.encodePassword(body.password);
     }
 
-    // const copy = [];
-    //
-    // body.roles.forEach(function (item) {
-    //   copy.push(item);
-    //   console.warn(item);
-    // });
-
-    // user.roles = [await this.rolesService.getRoleByName(body.roles.f.name)];
-    // for (let i = 0; i < body.roles.length; i++) {
-    //   user.roles.push(
-    //     await this.rolesService.getRoleByName(body.roles[i].name),
-    //   );
-    // }
+    const list: Role[] = [];
+    for (const element of body.roles) {
+      list.push(await this.rolesService.getRoleByName(element.name));
+    }
+    user.roles = list;
 
     return this.repository.save(user);
   }
@@ -118,7 +84,6 @@ export class UsersService {
     }
 
     user.sub = sub; // free sub
-    // user.subId = 4; // free sub
     user.subDateStart = new Date(Date.parse('0001-01-01 00:00:00'));
     user.image = ''; // 'https://i.imgur.com/DL9EEnF.png';
     user.roles = [role];

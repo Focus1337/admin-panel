@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Role } from '@/api/roles/roles.entity';
 
 export class UpdateUserDto {
@@ -22,5 +28,6 @@ export class UpdateUserDto {
   @IsOptional()
   public confirmPassword: string;
 
-  // public roles: Role[];
+  @IsArray()
+  public roles: Role[];
 }
