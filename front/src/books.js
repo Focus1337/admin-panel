@@ -43,9 +43,9 @@ export const BookEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <TextInput validate={validateTitle} source="title" />
-            <TextInput validate={validateTitle} multiline source="description" />
-            <TextInput validate={validateTitle} source="genre" />
+            <TextInput source="title" />
+            <TextInput multiline source="description" />
+            <TextInput source="genre" />
             <NumberInput source="subType" />
             <TextInput source="image" />
             <NumberInput source="year" />

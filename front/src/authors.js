@@ -29,7 +29,7 @@ export const AuthorEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <TextInput validateFullName={validateFullName} source="fullName" />
+            <TextInput source="fullName" />
             <TextInput source="image" />
             <TextInput multiline source="description" />
         </SimpleForm>

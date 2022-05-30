@@ -48,11 +48,11 @@ export const UserEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            <TextInput validate={validateName} source="name"/>
-            <TextInput validate={validateLastName} source="lastName"/>
-            <TextInput validate={validateEmail} source="email"/>
-            <PasswordInput validate={validatePassword} source="password"/>
-            <PasswordInput validate={validatePassword} source="confirmPassword"/>
+            <TextInput source="name"/>
+            <TextInput source="lastName"/>
+            <TextInput source="email"/>
+            <PasswordInput source="password"/>
+            <PasswordInput source="confirmPassword"/>
             <ArrayInput source="roles"><SimpleFormIterator>
                 <TextInput source="name"/>
                 </SimpleFormIterator></ArrayInput>
