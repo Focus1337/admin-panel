@@ -10,8 +10,23 @@ import {
     NumberField,
     SingleFieldList,
     TextField,
-    ArrayInput, Edit, SimpleForm, SimpleFormIterator, TextInput, PasswordInput, Create
+    ArrayInput, Edit, SimpleForm, SimpleFormIterator, TextInput, PasswordInput, Create} from 'react-admin';
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    maxValue,
+    number,
+    regex,
+    email,
+    choices
 } from 'react-admin';
+
+const validateEmail=email();
+const validateName=[required(), maxLength(15)];
+const validateLastName=[required(), maxLength(15)];
+const validatePassword=[required(), maxLength(30)];
 
 export const UserList = () => (
     <List>
@@ -33,11 +48,11 @@ export const UserEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            <TextInput source="name"/>
-            <TextInput source="lastName"/>
-            <TextInput source="email"/>
-            <PasswordInput source="password"/>
-            <PasswordInput source="confirmPassword"/>
+            <TextInput validate={validateName} source="name"/>
+            <TextInput validate={validateLastName} source="lastName"/>
+            <TextInput validate={validateEmail} source="email"/>
+            <PasswordInput validate={validatePassword} source="password"/>
+            <PasswordInput validate={validatePassword} source="confirmPassword"/>
             <ArrayInput source="roles"><SimpleFormIterator>
                 <TextInput source="name"/>
                 </SimpleFormIterator></ArrayInput>
@@ -48,11 +63,11 @@ export const UserEdit = () => (
 export const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="name"/>
-            <TextInput source="lastName"/>
-            <TextInput source="email"/>
-            <PasswordInput source="password"/>
-            <PasswordInput source="confirmPassword"/>
+            <TextInput validate={validateName} source="name"/>
+            <TextInput validate={validateLastName} source="lastName"/>
+            <TextInput validate={validateEmail} source="email"/>
+            <PasswordInput validate={validatePassword} source="password"/>
+            <PasswordInput validate={validatePassword} source="confirmPassword"/>
         </SimpleForm>
     </Create>
 );

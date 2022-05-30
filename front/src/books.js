@@ -1,5 +1,25 @@
 import { Datagrid, DateField, EditButton, ImageField, List, NumberField, TextField, SimpleForm, TextInput, NumberInput, Edit, Create } from 'react-admin';
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    maxValue,
+    number,
+    regex,
+    email,
+    choices
+} from 'react-admin';
 
+const authorvalidation = (value, allValues) =>{
+    if(!value)
+    {
+        return 'Author requier'
+    }
+};
+
+const validateAuthor=[required(), maxLength(30), authorvalidation];
+const validateTitle=[required()];
 
 export const BookList = () => (
     <List>
@@ -9,7 +29,7 @@ export const BookList = () => (
             <TextField source="description" />
             <TextField source="genre" />
             <NumberField source="subType" />
-            <ImageField source="image" />
+            <ImageField  source="image" />
             <NumberField source="year" />
             <NumberField source="rating" />
             <DateField source="addedDate" />
@@ -23,14 +43,14 @@ export const BookEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <TextInput source="title" />
-            <TextInput multiline source="description" />
-            <TextInput source="genre" />
+            <TextInput validate={validateTitle} source="title" />
+            <TextInput validate={validateTitle} multiline source="description" />
+            <TextInput validate={validateTitle} source="genre" />
             <NumberInput source="subType" />
             <TextInput source="image" />
             <NumberInput source="year" />
             <NumberInput source="rating" />
-            <TextInput source="authorId" />
+            <TextInput validate={validateAuthor} source="authorId" />
         </SimpleForm>
     </Edit>
 );
@@ -38,14 +58,14 @@ export const BookEdit = () => (
 export const BookCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source='title'/>
-            <TextInput multiline source='description'/>
-            <TextInput source='genre'/>
+            <TextInput validate={validateTitle} source='title'/>
+            <TextInput validate={validateTitle} multiline source='description'/>
+            <TextInput validate={validateTitle} source='genre'/>
             <NumberInput source='subType'/>
             <TextInput source='image'/>
             <NumberInput source='year'/>
             <NumberInput source='rating'/>
-            <TextInput source='authorId'/>
+            <TextInput validate={validateAuthor} source='authorId'/>
         </SimpleForm>
     </Create>
 );
