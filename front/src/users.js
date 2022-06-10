@@ -34,7 +34,6 @@ export const UserList = () => (
             <TextField source="id"/>
             <EmailField source="email"/>
             <BooleanField source="emailConfirmed"/>
-            <TextField source="passwordHash"/>
             <TextField source="name"/>
             <TextField source="lastName"/>
             <DateField source="subDateStart"/>
