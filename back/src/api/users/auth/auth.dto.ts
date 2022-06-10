@@ -22,7 +22,7 @@ export class RegisterDto {
 export class LoginDto {
   @Trim()
   @IsEmail()
-  public readonly email: string;
+  public readonly username: string;
 
   @IsString()
   public readonly password: string;

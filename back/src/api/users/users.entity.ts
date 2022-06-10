@@ -4,9 +4,12 @@ import {
   Column,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Role } from '../roles/roles.entity';
 import { Exclude } from 'class-transformer';
+import { Subscription } from '@/api/subs/subs.entity';
 
 export abstract class IdentityUser {
   @PrimaryGeneratedColumn('uuid', { name: 'Id' })
@@ -106,8 +109,8 @@ export class User extends IdentityUser {
   @Column({ type: 'text', name: 'LastName', nullable: false })
   public lastName: string;
 
-  @Column({ type: 'integer', name: 'SubId', nullable: false })
-  public subId: number;
+  @Column({ type: 'text', name: 'Image', nullable: false })
+  public image: string;
 
   @Column({
     type: 'timestamp without time zone',
@@ -116,8 +119,9 @@ export class User extends IdentityUser {
   })
   public subDateStart: Date;
 
-  @Column({ type: 'text', name: 'Image', nullable: false })
-  public image: string;
+  @ManyToOne(() => Subscription, (subscription) => subscription.users)
+  @JoinColumn({ name: 'SubId' })
+  public sub: Subscription;
 
   @ManyToMany(() => Role)
   @JoinTable({

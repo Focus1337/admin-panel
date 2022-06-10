@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Role } from '@/api/roles/roles.entity';
 
 export class UpdateUserDto {
   @IsString()
@@ -14,12 +21,13 @@ export class UpdateUserDto {
   public email: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   public password: string;
-}
 
-export class UpdateNameDto {
   @IsString()
   @IsOptional()
-  public readonly name?: string;
+  public confirmPassword: string;
+
+  @IsArray()
+  public roles: Role[];
 }
