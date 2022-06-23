@@ -18,6 +18,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { JwtAuthGuard } from '@/api/users/auth/auth.guard';
+import { ShowUserDto } from '@/api/users/dto/show-user.dto';
+import { UserListDto } from '@/api/users/dto/user-list.dto';
 
 @Controller('users')
 export class UsersController {
@@ -29,14 +31,14 @@ export class UsersController {
   @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  public getAll(): Promise<User[]> {
+  public getAll(): Promise<UserListDto[]> {
     return this.service.getAll();
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  public getUser(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
+  public getUser(@Param('id', ParseUUIDPipe) id: string): Promise<ShowUserDto> {
     return this.service.getUser(id);
   }
 

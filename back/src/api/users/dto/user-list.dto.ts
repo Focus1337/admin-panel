@@ -1,13 +1,17 @@
 import {
   IsArray,
+  IsBoolean,
+  IsDate,
   IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
 } from 'class-validator';
 import { Role } from '@/api/roles/roles.entity';
 
-export class UpdateUserDto {
+export class UserListDto {
+  @IsString()
+  public id: string;
+
   @IsString()
   @IsNotEmpty()
   public name: string;
@@ -20,13 +24,16 @@ export class UpdateUserDto {
   @IsNotEmpty()
   public email: string;
 
-  @IsString()
-  @IsOptional()
-  public password?: string;
+  @IsBoolean()
+  @IsNotEmpty()
+  public emailConfirmed: boolean;
 
-  @IsString()
-  @IsOptional()
-  public confirmPassword?: string;
+  @IsEmail()
+  @IsNotEmpty()
+  public subName: string;
+
+  @IsDate()
+  public subDateStart: Date;
 
   @IsArray()
   public roles: Role[];

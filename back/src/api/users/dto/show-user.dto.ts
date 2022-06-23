@@ -7,7 +7,10 @@ import {
 } from 'class-validator';
 import { Role } from '@/api/roles/roles.entity';
 
-export class UpdateUserDto {
+export class ShowUserDto {
+  @IsString()
+  public id: string;
+
   @IsString()
   @IsNotEmpty()
   public name: string;

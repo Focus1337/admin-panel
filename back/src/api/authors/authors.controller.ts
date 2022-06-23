@@ -18,6 +18,7 @@ import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { JwtAuthGuard } from '@/api/users/auth/auth.guard';
+import { AuthorListDto } from '@/api/authors/dto/author-list.dto';
 
 @Controller('authors')
 export class AuthorsController {
@@ -29,7 +30,7 @@ export class AuthorsController {
   @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  public getAll(): Promise<Author[]> {
+  public getAll(): Promise<AuthorListDto[]> {
     return this.service.getAll();
   }
 

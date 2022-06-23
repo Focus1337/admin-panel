@@ -18,6 +18,7 @@ import { Book } from './books.entity';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksService } from './books.service';
 import { JwtAuthGuard } from '@/api/users/auth/auth.guard';
+import { ShowBookDto } from '@/api/books/dto/show-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -36,7 +37,7 @@ export class BooksController {
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  public getBook(@Param('id', ParseUUIDPipe) id: string): Promise<Book> {
+  public getBook(@Param('id', ParseUUIDPipe) id: string): Promise<ShowBookDto> {
     return this.service.getBook(id);
   }
 
