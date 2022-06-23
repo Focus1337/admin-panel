@@ -50,7 +50,7 @@ export const BookEdit = () => (
             <TextInput source="image" />
             <NumberInput source="year" />
             <NumberInput source="rating" />
-            <TextInput validate={validateAuthor} source="authorId" />
+            <TextInput source="authorId" />
         </SimpleForm>
     </Edit>
 );
@@ -58,14 +58,14 @@ export const BookEdit = () => (
 export const BookCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput validate={validateTitle} source='title'/>
-            <TextInput validate={validateTitle} multiline source='description'/>
-            <TextInput validate={validateTitle} source='genre'/>
+            <TextInput source='title'/>
+            <TextInput multiline source='description'/>
+            <TextInput source='genre'/>
             <NumberInput source='subType'/>
             <TextInput source='image'/>
             <NumberInput source='year'/>
             <NumberInput source='rating'/>
-            <TextInput validate={validateAuthor} source='authorId'/>
+            <TextInput source='authorId'/>
         </SimpleForm>
     </Create>
 );

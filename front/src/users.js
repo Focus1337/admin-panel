@@ -33,10 +33,11 @@ export const UserList = () => (
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <EmailField source="email"/>
-            <BooleanField source="emailConfirmed"/>
+            <BooleanField source="emailConfirmed" />
             <TextField source="name"/>
             <TextField source="lastName"/>
-            <DateField source="subDateStart"/>
+            <TextField source="subName" />
+            <DateField source="subDateStart" />
             <ArrayField source="roles"><SingleFieldList><ChipField source="name"/></SingleFieldList></ArrayField>
             <EditButton/>
         </Datagrid>
@@ -62,11 +63,11 @@ export const UserEdit = () => (
 export const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput validate={validateName} source="name"/>
-            <TextInput validate={validateLastName} source="lastName"/>
-            <TextInput validate={validateEmail} source="email"/>
-            <PasswordInput validate={validatePassword} source="password"/>
-            <PasswordInput validate={validatePassword} source="confirmPassword"/>
+            <TextInput source="name"/>
+            <TextInput source="lastName"/>
+            <TextInput source="email"/>
+            <PasswordInput source="password"/>
+            <PasswordInput source="confirmPassword"/>
         </SimpleForm>
     </Create>
 );

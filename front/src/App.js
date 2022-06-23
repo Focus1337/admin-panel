@@ -1,6 +1,6 @@
 import * as React from "react";
 import jsonServerProvider from 'ra-data-json-server';
-import {Admin, Resource, fetchUtils} from 'react-admin';
+import {Admin, Resource, fetchUtils, EditGuesser, ListGuesser} from 'react-admin';
 import {UserList, UserEdit, UserCreate} from './users';
 import { AuthorList, AuthorEdit, AuthorCreate } from './authors';
 import {BookList, BookEdit, BookCreate} from './books';
